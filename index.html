@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POMO — Pomodoro Study Service</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/images/logo/pomo-logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Gochi+Hand&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== 공통 헤더 (2-row) ===== -->
+  <header class="header">
+    <!-- Row 1: Auth 버튼 (오른쪽 정렬) -->
+    <div class="header-auth-row">
+      <button class="auth-btn" id="loginBtn" onclick="openModal('login')">Login</button>
+      <button class="auth-btn auth-signup" id="signupBtn" onclick="openModal('signup')">Sign up</button>
+      <span class="user-greeting" id="userGreeting" style="display:none;"></span>
+      <button class="auth-btn" id="logoutBtn" style="display:none;" onclick="logout()">Log Out</button>
+    </div>
+    <!-- Row 2: 로고(왼쪽) + 네비(중앙) -->
+    <div class="header-main-row">
+      <button class="logo-btn" onclick="showPage('mainPage')" aria-label="Go to Main">
+        <img src="assets/images/logo/pomo-logo.png" alt="POMO" class="logo-img" />
+      </button>
+      <nav class="header-nav">
+        <button class="nav-img-btn" onclick="navigateToStudy()" aria-label="Study Timer">
+          <img src="assets/images/icons/btn-study.png" alt="Study Timer" class="nav-btn-img" />
+        </button>
+        <button class="nav-img-btn" onclick="navigateToRest()" aria-label="Rest Timer">
+          <img src="assets/images/icons/btn-rest.png" alt="Rest Timer" class="nav-btn-img" />
+        </button>
+        <button class="nav-img-btn" onclick="showPage('recordPage'); renderRecordPage();" aria-label="Record">
+          <img src="assets/images/icons/btn-record.png" alt="Record" class="nav-btn-img" />
+        </button>
+      </nav>
+      <div class="header-spacer"></div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN PAGE ===== -->
+  <section id="mainPage" class="page active-page page-main">
+    <div class="main-hero">
+      <div class="tomato-container">
+        <img src="assets/images/backgrounds/main-tomato.png" class="tomato-bg-img" alt="" aria-hidden="true" />
+        <div class="tomato-cards">
+          <div class="tomato-card card-what">
+            <h2 class="tomato-card-title">WHAT is POMO?</h2>
+            <p class="tomato-card-desc">A web-based study service<br/>built on the Pomodoro Technique.</p>
+          </div>
+          <div class="tomato-card card-study" onclick="navigateToStudy()" role="button" tabindex="0">
+            <h2 class="tomato-card-title">Study Timer</h2>
+            <p class="tomato-card-desc">Create tasks and focus<br/>for 25 minutes.</p>
+          </div>
+          <div class="tomato-card card-rest" onclick="navigateToRest()" role="button" tabindex="0">
+            <h2 class="tomato-card-title">Rest Timer</h2>
+            <p class="tomato-card-desc">Step back and recharge<br/>for 5 minutes.</p>
+          </div>
+          <div class="tomato-card card-record" onclick="showPage('recordPage'); renderRecordPage();" role="button" tabindex="0">
+            <h2 class="tomato-card-title">Record</h2>
+            <p class="tomato-card-desc">Track your beat<br/>and total POMOs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STUDY TIMER PAGE ===== -->
+  <section id="studyPage" class="page page-study">
+
+    <!-- 메시지 바 (check-yellow 배경) -->
+    <div class="study-msg-bar">
+      <span class="msg-label">message :</span>
+      <span class="msg-text" id="studyMessageBar">Keep going! Keep going! Keep going!</span>
+    </div>
+
+    <!-- 씬 래퍼 (pre/next 버튼 + 씬 박스) -->
+    <div class="scene-wrapper">
+
+      <button class="scene-nav-btn scene-prev-btn" onclick="changeStudyTheme('prev')" aria-label="Previous theme">
+        <div class="nav-arrow nav-arrow-left"></div>
+        <span class="nav-arrow-label">pre</span>
+      </button>
+
+      <div class="scene-box" id="studySceneBox">
+        <div class="scene-timer" id="studyTimerDisplay">25:00</div>
+        <div class="scene-chars">
+          <img src="assets/images/characters/tomato-study.png" alt="" class="scene-tomato-char" aria-hidden="true" />
+          <img src="assets/images/characters/plate.png" alt="" class="scene-plate-char" aria-hidden="true" />
+        </div>
+        <div class="lp-player" onclick="toggleStudyTimer()" role="button" aria-label="Play or Pause timer">
+          <img src="assets/images/icons/lp-icon.png" alt="LP" class="lp-disc" id="studyLpImg" />
+          <div class="lp-controls">
+            <img src="assets/images/characters/character-stickman.png" alt="" class="lp-stickman" aria-hidden="true" />
+            <div class="lp-track">
+              <div class="lp-fill" id="studyProgressFill"></div>
+            </div>
+            <span class="lp-play-icon" id="studyPlayBtn">▶</span>
+            <img src="assets/images/characters/tomato-study.png" alt="" class="lp-tomato-mini" aria-hidden="true" />
+          </div>
+          <span class="lp-count" id="studyPomoCount">0/1</span>
+        </div>
+      </div>
+
+      <button class="scene-nav-btn scene-next-btn" onclick="changeStudyTheme('next')" aria-label="Next theme">
+        <div class="nav-arrow nav-arrow-right"></div>
+        <span class="nav-arrow-label">next</span>
+      </button>
+
+    </div>
+
+    <!-- Task Desk -->
+    <div class="task-desk">
+      <div class="desk-side">
+        <img src="assets/images/icons/chopsticks.png" alt="" class="desk-utensil" aria-hidden="true" />
+      </div>
+      <div class="task-desk-main">
+        <div class="task-desk-bar">
+          <button class="create-btn" onclick="openModal('orderForm')">+ CREATE</button>
+        </div>
+        <div class="task-grid" id="taskGrid">
+          <div class="task-empty" id="taskEmpty">No tasks yet. Click + CREATE to add one!</div>
+        </div>
+      </div>
+      <div class="desk-side">
+        <img src="assets/images/icons/spoon.png" alt="" class="desk-utensil" aria-hidden="true" />
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== REST TIMER PAGE ===== -->
+  <section id="restPage" class="page page-rest">
+
+    <!-- 메시지 바 (check-green 배경) -->
+    <div class="rest-msg-bar">
+      <span class="msg-label">message :</span>
+      <span class="msg-text" id="restMessageBar">You worked hard. Take a real break.</span>
+    </div>
+
+    <!-- 씬 래퍼 -->
+    <div class="scene-wrapper">
+
+      <button class="scene-nav-btn rest-nav-btn scene-prev-btn" onclick="changeRestTheme('prev')" aria-label="Previous theme">
+        <div class="nav-arrow nav-arrow-left-green"></div>
+        <span class="nav-arrow-label">pre</span>
+      </button>
+
+      <div class="scene-box rest-scene-box" id="restSceneBox">
+        <div class="scene-timer" id="restTimerDisplay">05:00</div>
+        <div class="scene-chars">
+          <img src="assets/images/characters/character-stickman.png" alt="" class="scene-stickman-char" aria-hidden="true" />
+        </div>
+        <div class="scene-task-label" id="restActiveTaskLabel">Break Time!</div>
+      </div>
+
+      <button class="scene-nav-btn rest-nav-btn scene-next-btn" onclick="changeRestTheme('next')" aria-label="Next theme">
+        <div class="nav-arrow nav-arrow-right-green"></div>
+        <span class="nav-arrow-label">next</span>
+      </button>
+
+    </div>
+
+    <!-- Rest LP 플레이어 (씬 밖 하단, 초록 pill) -->
+    <div class="rest-lp-player">
+      <img src="assets/images/icons/lp-icon-rest.png" alt="LP" class="lp-disc rest-lp-disc" id="restLpImg" />
+      <div class="rest-lp-center">
+        <div class="rest-lp-song">What's song you is hearing?</div>
+        <div class="rest-lp-controls">
+          <button class="rest-ctrl-btn" onclick="changeRestTheme('prev')">«</button>
+          <button class="rest-ctrl-btn rest-ctrl-play" onclick="toggleRestTimer()" id="restPlayBtn">▶</button>
+          <button class="rest-ctrl-btn" onclick="changeRestTheme('next')">»</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== RECORD PAGE ===== -->
+  <section id="recordPage" class="page page-record">
+
+    <!-- 레벨 카드 (check-pink 배경, 전체 가로) -->
+    <div class="level-card">
+      <div class="level-left">
+        <img src="assets/images/characters/character-record.png" alt="" class="level-char-img" aria-hidden="true" />
+        <div class="level-label" id="profileLevel">Lv. Rookie</div>
+      </div>
+      <div class="level-center">
+        <p class="level-total-text" id="profileTotal">You've eaten a total of 0 POMOs so far.</p>
+      </div>
+      <div class="level-right">
+        <div class="speech-bubble" id="speechBubble">Still hungry for more POMOs? Keep going!</div>
+      </div>
+    </div>
+
+    <!-- 캘린더 영역 (#FCE4EC 핑크, 점선 테두리) -->
+    <div class="calendar-area">
+
+      <div class="calendar-col">
+        <div class="calendar-nav">
+          <button class="cal-nav-btn" onclick="changeCalendarMonth(-1)">◀</button>
+          <span class="cal-month-label" id="calMonthLabel">June 2026</span>
+          <button class="cal-nav-btn" onclick="changeCalendarMonth(1)">▶</button>
+        </div>
+        <div class="record-calendar" id="recordCalendar"></div>
+      </div>
+
+      <div class="today-col">
+        <div class="today-card">
+          <div class="today-title">Today's Pomo ?</div>
+          <div class="today-count-circle">
+            <span id="dayPomoCount">0</span>
+          </div>
+          <div class="today-focus">
+            <span class="today-clock">⏰</span>
+            <span id="dayFocusTime">Total Focus Time: 0 min</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ===== MODAL OVERLAY ===== -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal-box" id="modalBox">
+
+      <!-- Order Form -->
+      <div class="modal-content" id="modalOrderForm" style="display:none;">
+        <h2 class="modal-title order-form-title">Order Form</h2>
+        <p class="modal-section-label">details</p>
+        <div class="modal-field">
+          <label class="modal-label">What do you study?</label>
+          <input type="text" id="taskTitleInput" class="modal-input" placeholder="Fill your task ..." maxlength="60" />
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">How many POMOs do you eat?</label>
+          <div class="pomo-selector" id="pomoSelector">
+            <button class="pomo-option" data-value="1" onclick="selectPomoCount(1)">
+              <img src="assets/images/tasks/task-1.png" alt="1 POMO" class="pomo-opt-img" />
+              <span class="pomo-opt-label">× 1</span>
+            </button>
+            <button class="pomo-option" data-value="2" onclick="selectPomoCount(2)">
+              <img src="assets/images/tasks/task-2.png" alt="2 POMOs" class="pomo-opt-img" />
+              <span class="pomo-opt-label">× 2</span>
+            </button>
+            <button class="pomo-option" data-value="3" onclick="selectPomoCount(3)">
+              <img src="assets/images/tasks/task-3.png" alt="3 POMOs" class="pomo-opt-img" />
+              <span class="pomo-opt-label">× 3</span>
+            </button>
+            <button class="pomo-option" data-value="4" onclick="selectPomoCount(4)">
+              <img src="assets/images/tasks/task-4.png" alt="4 POMOs" class="pomo-opt-img" />
+              <span class="pomo-opt-label">× 4</span>
+            </button>
+          </div>
+        </div>
+        <button class="modal-send-btn" onclick="submitOrderForm()">send</button>
+      </div>
+
+      <!-- Delete Task -->
+      <div class="modal-content" id="modalDeleteTask" style="display:none;">
+        <img src="assets/images/characters/tomato-study.png" alt="" class="modal-char-img" aria-hidden="true" />
+        <h2 class="modal-title">Delete this task?</h2>
+        <p class="modal-desc" id="deleteTaskName"></p>
+        <div class="modal-buttons">
+          <button class="modal-btn modal-yes-btn" onclick="confirmDeleteTask()">YES</button>
+          <button class="modal-btn modal-no-btn" onclick="closeModal()">No</button>
+        </div>
+      </div>
+
+      <!-- Study Complete -->
+      <div class="modal-content" id="modalStudyComplete" style="display:none;">
+        <img src="assets/images/characters/tomato-study.png" alt="" class="modal-char-img modal-char-big" aria-hidden="true" />
+        <h2 class="modal-title">You've eaten 1 POMO!</h2>
+        <p class="modal-desc" id="studyCompleteDesc"></p>
+        <button class="modal-btn modal-yes-btn" onclick="afterPomoComplete()">Continue</button>
+      </div>
+
+      <!-- Skip Rest -->
+      <div class="modal-content" id="modalSkipRest" style="display:none;">
+        <img src="assets/images/characters/tomato-study.png" alt="" class="modal-char-img" aria-hidden="true" />
+        <h2 class="modal-title">Skip rest time?</h2>
+        <div class="modal-buttons">
+          <button class="modal-btn modal-yes-btn" onclick="confirmSkipRest(true)">YES</button>
+          <button class="modal-btn modal-no-btn" onclick="confirmSkipRest(false)">No</button>
+        </div>
+      </div>
+
+      <!-- Break Complete -->
+      <div class="modal-content" id="modalBreakComplete" style="display:none;">
+        <img src="assets/images/characters/character-stickman.png" alt="" class="modal-char-img" aria-hidden="true" />
+        <h2 class="modal-title">Break Complete!</h2>
+        <p class="modal-desc">Ready for the next POMO?</p>
+        <div class="modal-buttons">
+          <button class="modal-btn modal-yes-btn" onclick="confirmBreakComplete(true)">YES</button>
+          <button class="modal-btn modal-no-btn" onclick="confirmBreakComplete(false)">No</button>
+        </div>
+      </div>
+
+      <!-- Login -->
+      <div class="modal-content" id="modalLogin" style="display:none;">
+        <h2 class="modal-title">Log In</h2>
+        <div class="modal-field">
+          <label class="modal-label">Username</label>
+          <input type="text" id="loginUsername" class="modal-input" placeholder="Enter username" />
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Password</label>
+          <input type="password" id="loginPassword" class="modal-input" placeholder="Enter password" />
+        </div>
+        <p class="modal-note">* Demo only. Not secure.</p>
+        <div class="modal-buttons">
+          <button class="modal-btn login-yes-btn" onclick="login()">Log In</button>
+          <button class="modal-btn modal-no-btn" onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Sign Up -->
+      <div class="modal-content" id="modalSignup" style="display:none;">
+        <h2 class="modal-title">Sign Up</h2>
+        <div class="modal-field">
+          <label class="modal-label">Username</label>
+          <input type="text" id="signupUsername" class="modal-input" placeholder="Choose a username" />
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Password</label>
+          <input type="password" id="signupPassword" class="modal-input" placeholder="Choose a password" />
+        </div>
+        <p class="modal-note">* Demo only. Not secure.</p>
+        <div class="modal-buttons">
+          <button class="modal-btn login-yes-btn" onclick="signUp()">Sign Up</button>
+          <button class="modal-btn modal-no-btn" onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
