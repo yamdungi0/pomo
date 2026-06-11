@@ -24,7 +24,7 @@
   --pink-bg:    #FCE4EC;
   --radius:     16px;
   --radius-sm:  10px;
-  --font:       'Gochi Hand', cursive;
+  --font:       'Inter', sans-serif;
   --header-h:   110px;
 }
 
@@ -33,6 +33,7 @@ html, body {
   max-width: 1440px;
   margin: 0 auto;
   min-height: 100vh;
+  overflow-x: hidden;
   font-family: var(--font);
   background: var(--cream);
   color: var(--black);
@@ -41,24 +42,16 @@ html, body {
 /* =====================================================
    페이지 show / hide
    ===================================================== */
-.page           { display: none; }
-.page.active-page { display: block; }
-
-/* Study / Rest: flex column 레이아웃 */
-#studyPage.active-page { display: flex; flex-direction: column; }
-#restPage.active-page  { display: flex; flex-direction: column; }
-
-/* Study: viewport 꽉 채움 (Task Desk까지 보여야 함) */
-#studyPage {
-  height: calc(100vh - var(--header-h));
-  min-height: 0;
-  overflow: hidden;
-}
+.page                  { display: none !important; }
+.page.active-page      { display: block !important; }
+#studyPage.active-page { display: flex !important; flex-direction: column; height: calc(100vh - var(--header-h)); overflow-y: auto; overflow-x: hidden; }
+#restPage.active-page  { display: flex !important; flex-direction: column; }
 
 /* Rest: 자연스럽게 흘러내림 (LP가 씬 밖에 있어 스크롤 가능) */
 #restPage {
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* =====================================================
@@ -69,7 +62,7 @@ html, body {
   top: 0;
   z-index: 200;
   height: var(--header-h);
-  background-image: url('../assets/images/backgrounds/header-bg.png');
+  background-image: url('../assets/images/backgrounds/header-bg.png?v=2');
   background-size: auto 100%;
   background-repeat: repeat-x;
   box-shadow: 0 3px 14px rgba(0,0,0,0.35);
@@ -85,7 +78,7 @@ html, body {
   justify-content: flex-end;
   gap: 8px;
   padding: 0 28px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: none;
   flex-shrink: 0;
 }
 
@@ -130,9 +123,11 @@ html, body {
   padding: 0;
   line-height: 0;
   justify-self: start;
+  margin-top: -18px;
+  margin-left: 20px;
 }
 .logo-img {
-  height: 52px;
+  height: 78px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
@@ -152,13 +147,16 @@ html, body {
   padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 45px;
   transition: transform 0.15s, filter 0.15s;
 }
 .nav-img-btn:hover {
   transform: translateY(-2px) scale(1.04);
   filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
 }
-.nav-btn-img { height: 45px; width: auto; object-fit: contain; }
+.nav-btn-img { width: 90px; height: 45px; object-fit: contain; }
 
 .header-spacer { justify-self: end; }
 
@@ -166,7 +164,7 @@ html, body {
    MAIN PAGE
    ===================================================== */
 .page-main {
-  background-image: url('../assets/images/backgrounds/main-bg.png');
+  background-image: url('../assets/images/backgrounds/main-bg.png?v=2');
   background-size: cover;
   background-position: center;
   min-height: calc(100vh - var(--header-h));
@@ -181,6 +179,7 @@ html, body {
 .tomato-container {
   position: relative;
   width: min(680px, 88vw);
+  margin-top: -40px;
 }
 .tomato-bg-img {
   width: 100%;
@@ -190,10 +189,11 @@ html, body {
 }
 .tomato-cards {
   position: absolute;
-  top: 24%; left: 8%; right: 8%; bottom: 8%;
+  top: 20%; left: 8%; right: 8%; bottom: 4%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  gap: 0;
 }
 .tomato-card {
   display: flex;
@@ -201,25 +201,53 @@ html, body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 10px 14px;
+  padding: 12px 18px;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
 }
-.tomato-card:hover { background: rgba(255,255,255,0.18); }
+.tomato-card:hover { background: transparent; }
 .card-what { cursor: default; }
 .card-what:hover { background: transparent; }
+
+/* 왼쪽 열 (card-what, card-rest): 오른쪽 정렬 */
+.card-what,
+.card-rest {
+  text-align: right;
+  align-items: flex-end;
+}
+
+/* 오른쪽 열 (card-study, card-record): 왼쪽 정렬 */
+.card-study,
+.card-record {
+  text-align: left;
+  align-items: flex-start;
+}
+
+/* 위 두 카드: 아래로 내리기 */
+.card-what,
+.card-study {
+  padding-top: 60px;
+}
+
+/* 아래 두 카드: 위로 올리기 */
+.card-rest,
+.card-record {
+  align-self: flex-start;
+  margin-top: 12px;
+}
+
 .tomato-card-title {
   font-size: clamp(0.78rem, 1.5vw, 1.1rem);
   font-weight: 900;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.55);
+  color: #000;
+  text-shadow: none;
   margin-bottom: 4px;
 }
 .tomato-card-desc {
   font-size: clamp(0.62rem, 1vw, 0.8rem);
   color: rgba(255,255,255,0.9);
-  text-shadow: 0 1px 5px rgba(0,0,0,0.55);
+  text-shadow: 0 1px 5px rgba(0,0,0,0.4);
   line-height: 1.5;
 }
 
@@ -234,15 +262,19 @@ html, body {
   align-items: center;
   gap: 12px;
   padding: 0 28px;
+  width: 680px;
+  max-width: calc(100% - 48px);
+  margin: 14px auto;
+  border-radius: 8px;
 }
 .study-msg-bar {
-  background-image: url('../assets/images/backgrounds/check-yellow.png');
+  background-image: url('../assets/images/backgrounds/check-yellow.png?v=2');
   background-size: 56px;
   background-repeat: repeat;
   border-bottom: 2px solid rgba(123,94,58,0.4);
 }
 .rest-msg-bar {
-  background-image: url('../assets/images/backgrounds/check-green.png');
+  background-image: url('../assets/images/backgrounds/check-green.png?v=2');
   background-size: 56px;
   background-repeat: repeat;
   border-bottom: 2px solid rgba(46,107,90,0.4);
@@ -250,14 +282,14 @@ html, body {
 .msg-label {
   font-size: 18px;
   font-weight: 900;
-  color: var(--brown);
+  color: #1A1A1A;
   font-style: italic;
   flex-shrink: 0;
 }
 .msg-text {
   font-size: 18px;
   font-weight: 700;
-  color: var(--brown);
+  color: #1A1A1A;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -267,7 +299,7 @@ html, body {
    STUDY TIMER PAGE
    ===================================================== */
 .page-study {
-  background-image: url('../assets/images/backgrounds/study-bg.png');
+  background-image: url('../assets/images/backgrounds/study-bg.png?v=2');
   background-size: 280px auto;
   background-repeat: repeat;
 }
@@ -278,13 +310,14 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 72px;
+  padding: 16px 20px;
+  overflow: visible;
+  z-index: 1;
 }
 
 /* Study: 남은 공간 모두 차지 (msg-bar와 task-desk 사이) */
 #studyPage .scene-wrapper {
-  flex: 1;
-  min-height: 0;
+  flex-shrink: 0;
 }
 
 /* Rest: 씬 박스 높이만큼만 */
@@ -292,30 +325,27 @@ html, body {
   flex-shrink: 0;
 }
 
-/* pre / next 버튼 (60×60 원형) */
+/* pre / next 버튼 (flex item으로 scene-box 양 옆 배치) */
 .scene-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
+  z-index: 20;
   width: 60px;
   height: 60px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.2);
-  border: 2px solid rgba(255,255,255,0.4);
+  background: none;
+  border: none;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  z-index: 10;
   padding: 0;
-  transition: transform 0.15s, background 0.15s;
+  transition: transform 0.15s;
   user-select: none;
 }
-.scene-nav-btn:hover { transform: translateY(-50%) scale(1.1); background: rgba(0,0,0,0.35); }
-.scene-prev-btn { left: 8px; }
-.scene-next-btn { right: 8px; }
+.scene-nav-btn:hover { transform: scale(1.1); }
+.scene-prev-btn { }
+.scene-next-btn { }
 
 /* CSS 삼각형 */
 .nav-arrow { width: 0; height: 0; }
@@ -346,19 +376,22 @@ html, body {
 .nav-arrow-label {
   font-size: 0.68rem;
   font-weight: 700;
-  color: #fff;
+  color: #F5E642;
   text-shadow: 0 1px 5px rgba(0,0,0,0.8);
   letter-spacing: 1px;
+}
+.rest-nav-btn .nav-arrow-label {
+  color: #4CAF50;
 }
 
 /* ── 씬 박스 (고정 크기, 라운드, 그림자) ── */
 .scene-box {
   position: relative;
-  width: 100%;
-  max-width: 620px;
+  width: 680px;
+  max-width: calc(100% - 120px);
   height: 420px;
   flex-shrink: 0;
-  background-image: url('../assets/images/backgrounds/study-scene-1.png');
+  background-image: url('../assets/images/backgrounds/study-scene-1.png?v=2');
   background-size: cover;
   background-position: center;
   border-radius: 14px;
@@ -368,7 +401,7 @@ html, body {
 
 /* Rest 씬: 다른 배경 이미지 */
 .rest-scene-box {
-  background-image: url('../assets/images/backgrounds/rest-scene-1.png');
+  background-image: url('../assets/images/backgrounds/rest-scene-1.png?v=2');
 }
 
 /* ── 씬 타이머 (텍스트만, 반투명 박스 없음) ── */
@@ -377,13 +410,12 @@ html, body {
   top: 18px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 900;
   color: #fff;
   letter-spacing: 5px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  /* 박스 없음 — text-shadow만 */
   text-shadow:
     0 2px 20px rgba(0,0,0,0.95),
     0 0  40px rgba(0,0,0,0.7);
@@ -392,20 +424,20 @@ html, body {
   padding: 0;
 }
 
-/* Rest 타이머: 상단 왼쪽 정렬, 36px */
+/* Rest 타이머: 중앙 정렬, 32px */
 .rest-scene-box .scene-timer {
-  left: 20px;
-  transform: none;
-  font-size: 36px;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
 }
 
 /* ── 씬 캐릭터 ── */
-/* Study: LP 플레이어 위 하단 중앙 */
 .scene-chars {
   position: absolute;
-  bottom: 80px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -45%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -413,29 +445,34 @@ html, body {
   pointer-events: none;
 }
 
-/* Rest: LP가 씬 밖이므로 씬 가운데 */
+/* Rest: 씬 중앙에 배치 */
 .rest-scene-box .scene-chars {
-  bottom: auto;
+  position: absolute;
   top: 50%;
-  transform: translate(-50%, -50%);
+  left: 50%;
+  transform: translate(-50%, -30%);
+  bottom: auto;
+  flex-direction: column;
+  align-items: center;
 }
 
 .scene-tomato-char {
-  width: 150px;
+  width: 140px;
   height: auto;
   filter: drop-shadow(0 4px 14px rgba(0,0,0,0.35));
   position: relative;
   z-index: 2;
 }
 .scene-plate-char {
-  width: 200px;
+  width: 190px;
   height: auto;
-  margin-top: -20px;
+  margin-top: -16px;
+  display: block;
   position: relative;
   z-index: 1;
 }
 .scene-stickman-char {
-  width: 160px;
+  width: 140px;
   height: auto;
   filter: drop-shadow(0 4px 14px rgba(0,0,0,0.3));
 }
@@ -465,13 +502,13 @@ html, body {
    ===================================================== */
 .lp-player {
   position: absolute;
-  bottom: 12px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 78%;
+  width: 75%;
   max-width: 470px;
   min-width: 252px;
-  height: 60px;
+  height: 52px;
   background: var(--yellow);
   border-radius: 999px;
   padding: 6px 14px 6px 6px;
@@ -554,71 +591,73 @@ html, body {
   flex-shrink: 0;
   display: flex;
   align-items: stretch;
-  height: 160px;
+  height: 170px;
+  min-height: 170px;
   overflow: hidden;
+  width: 70%;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  border: none;
+  outline: none;
 }
 .desk-side {
   flex-shrink: 0;
   width: 54px;
-  background-image: url('../assets/images/backgrounds/task-desk.jpg');
+  background-image: url('../assets/images/backgrounds/task-desk.jpg?v=2');
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 6px 0;
+  border: none;
 }
 .desk-utensil {
-  height: 80%;
+  height: 55%;
   width: auto;
   object-fit: contain;
-  max-height: 152px;
+  max-height: 90px;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
 }
 .task-desk-main {
   flex: 1;
-  background-image: url('../assets/images/backgrounds/task-desk.jpg');
+  background-image: url('../assets/images/backgrounds/task-desk.jpg?v=2');
   background-size: cover;
   background-position: center;
   display: flex;
-  flex-direction: column;
-  border-left:  2px solid rgba(255,255,255,0.1);
-  border-right: 2px solid rgba(255,255,255,0.1);
-  overflow: hidden;
-}
-.task-desk-bar {
-  flex-shrink: 0;
-  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
-  padding: 8px 16px;
-  border-bottom: 2px solid rgba(0,0,0,0.2);
+  border-left: none;
+  border-right: none;
+  overflow: hidden;
+  padding-right: 16px;
 }
 .create-btn {
-  background: var(--red);
-  color: #fff;
-  border: none;
+  background: #fff;
+  color: #000;
+  border: 2.5px solid #000;
   padding: 6px 18px;
   border-radius: 999px;
   font-size: 0.88rem;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s, transform 0.12s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
   flex-shrink: 0;
 }
-.create-btn:hover { background: var(--red-dark); transform: translateY(-2px); }
+.create-btn:hover { background: var(--light-gray); transform: translateY(-2px); }
 
 .task-grid {
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-direction: row;
   gap: 8px;
   padding: 8px 12px;
-  overflow-y: auto;
-  align-content: start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: center;
 }
-.task-grid::-webkit-scrollbar { width: 5px; }
+.task-grid::-webkit-scrollbar { height: 5px; }
 .task-grid::-webkit-scrollbar-thumb {
   background: rgba(255,255,255,0.25);
   border-radius: 3px;
@@ -635,35 +674,41 @@ html, body {
 
 /* Task 카드 */
 .task-card {
-  background: rgba(255,255,255,0.9);
-  border: 2.5px solid rgba(255,255,255,0.7);
+  background: none;
+  border: none;
   border-radius: var(--radius-sm);
   padding: 8px 6px;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: transform 0.15s;
   position: relative;
   user-select: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
+  width: 110px;
+  height: 170px;
+  flex-shrink: 0;
 }
 .task-card:hover {
-  border-color: var(--red-light);
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.22);
 }
-.task-card.active {
-  border-color: var(--red);
-  background: rgba(255,240,238,0.95);
-  box-shadow: 0 0 0 2.5px rgba(232,67,45,0.3), 0 4px 12px rgba(0,0,0,0.18);
-}
+.task-card.active { }
 .task-card.completed { opacity: 0.5; cursor: default; }
-.task-card.completed:hover { transform: none; box-shadow: none; }
+.task-card.completed:hover { transform: none; }
 
-.task-tomato-img { width: 64px; height: auto; object-fit: contain; display: block; }
-.task-title { font-size: 0.75rem; font-weight: 700; color: var(--brown); word-break: break-word; line-height: 1.25; }
+.task-tomato-img { width: 90px; height: auto; object-fit: contain; display: block; }
+.task-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  background: #E8432D;
+  border-radius: 999px;
+  padding: 3px 10px;
+  word-break: break-word;
+  line-height: 1.25;
+}
 .task-progress { font-size: 0.68rem; color: var(--gray); font-weight: 600; }
 .task-status-badge { font-size: 0.68rem; font-weight: 700; color: var(--green); }
 
@@ -690,9 +735,12 @@ html, body {
    REST TIMER PAGE
    ===================================================== */
 .page-rest {
-  background-image: url('../assets/images/backgrounds/rest-bg.jpg');
+  background-image: url('../assets/images/backgrounds/rest-bg.jpg?v=2');
   background-size: 360px auto;
   background-repeat: repeat;
+  min-height: 100vh;
+  background-attachment: local;
+  border-bottom: none;
 }
 
 /* ── REST: LP 플레이어 (씬 박스 밖 하단, 초록 pill, flex item) ── */
@@ -701,14 +749,13 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--green-lp);
+  background: var(--green);
   border-radius: 999px;
   padding: 8px 20px 8px 10px;
-  margin: 10px auto 16px;
-  width: 620px;
-  max-width: calc(100% - 32px);
-  min-width: 260px;
-  height: 70px;
+  margin: 14px auto 20px;
+  width: calc(100% - 140px);
+  max-width: 680px;
+  height: 78px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.3);
   user-select: none;
 }
@@ -739,6 +786,7 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  letter-spacing: 2px;
 }
 .rest-lp-controls {
   display: flex;
@@ -774,7 +822,7 @@ html, body {
    RECORD PAGE
    ===================================================== */
 .page-record {
-  background-image: url('../assets/images/backgrounds/record-bg.png');
+  background-image: url('../assets/images/backgrounds/record-bg.png?v=2');
   background-size: 280px auto;
   background-repeat: repeat;
   background-color: var(--cream);
@@ -788,24 +836,23 @@ html, body {
   align-items: center;
   gap: 24px;
   padding: 20px 32px;
-  background-image: url('../assets/images/backgrounds/check-pink.png');
+  background-image: url('../assets/images/backgrounds/check-pink.png?v=2');
   background-size: 56px;
   background-repeat: repeat;
   border-bottom: 3px solid rgba(233,30,140,0.25);
   height: 120px;
   min-height: 120px;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  border-radius: 0 0 var(--radius) var(--radius);
+  max-width: 700px;
+  width: calc(100% - 56px);
+  margin: 20px auto 0;
+  border-radius: 16px;
 }
 .level-left {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  min-width: 90px;
+  gap: 8px;
 }
 .level-char-img {
   width: 80px;
@@ -823,10 +870,6 @@ html, body {
   border: 2px solid rgba(233,30,140,0.35);
   white-space: nowrap;
 }
-.level-center {
-  flex: 1;
-  text-align: center;
-}
 .level-total-text {
   font-size: 1.05rem;
   font-weight: 700;
@@ -834,11 +877,13 @@ html, body {
   line-height: 1.4;
 }
 .level-right {
-  flex-shrink: 0;
-  max-width: 220px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* 말풍선 (왼쪽 삼각 포인터) */
+/* 말풍선 (위쪽 삼각 포인터) */
 .speech-bubble {
   background: #fff;
   border-radius: var(--radius-sm);
@@ -854,34 +899,35 @@ html, body {
 .speech-bubble::before {
   content: '';
   position: absolute;
-  left: -14px; top: 50%;
-  transform: translateY(-50%);
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
-  border-right: 14px solid rgba(233,30,140,0.35);
+  top: -14px; left: 24px;
+  transform: none;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 14px solid rgba(233,30,140,0.35);
 }
 .speech-bubble::after {
   content: '';
   position: absolute;
-  left: -11px; top: 50%;
-  transform: translateY(-50%);
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-  border-right: 11px solid #fff;
+  top: -10px; left: 26px;
+  transform: none;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 11px solid #fff;
 }
 
 /* ── 캘린더 영역 ── */
 .calendar-area {
   display: grid;
-  grid-template-columns: 1fr 200px;
-  margin: 24px 28px 28px;
+  grid-template-columns: 1fr 160px;
+  max-width: 700px;
+  margin: 20px auto 28px;
   background: var(--pink-bg);
   border: 2px dashed var(--pink-hot);
   border-radius: var(--radius);
   overflow: hidden;
 }
 .calendar-col {
-  padding: 22px 24px;
+  padding: 16px;
   border-right: 2px dashed rgba(233,30,140,0.3);
 }
 .calendar-nav {
@@ -915,8 +961,8 @@ html, body {
 /* 날짜 그리드 (요일 헤더 없음) */
 .record-calendar {
   display: grid;
-  grid-template-columns: repeat(7, 60px);
-  gap: 4px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
 }
 
 /* 날짜 버튼 (plate-front.png) */
@@ -925,8 +971,8 @@ html, body {
   border: none;
   cursor: pointer;
   padding: 2px;
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -975,6 +1021,8 @@ html, body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  min-width: 160px;
+  max-width: 160px;
 }
 .today-card {
   display: flex;
@@ -990,22 +1038,25 @@ html, body {
   letter-spacing: 0.5px;
   text-align: center;
 }
-.today-count-circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: #fff;
-  border: 3px solid rgba(233,30,140,0.4);
+.today-plate-wrap {
+  position: relative;
+  width: 130px;
+  height: 130px;
+}
+.today-plate-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.today-plate-num {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(233,30,140,0.15);
-}
-.today-count-circle span {
   font-size: 2.8rem;
   font-weight: 900;
   color: var(--pink-hot);
-  line-height: 1;
 }
 .today-focus {
   display: flex;
@@ -1016,7 +1067,6 @@ html, body {
   color: var(--brown);
   text-align: center;
 }
-.today-clock { font-size: 1.1rem; }
 
 /* =====================================================
    MODAL
@@ -1269,7 +1319,7 @@ audio { display: none; }
 }
 
 @media (max-width: 700px) {
-  .scene-wrapper { padding: 10px 70px; }
+  .scene-wrapper { padding: 10px 12px; }
   .scene-box { height: 340px; }
   .scene-timer { font-size: 38px; letter-spacing: 3px; }
   .rest-scene-box .scene-timer { font-size: 28px; }
@@ -1282,25 +1332,22 @@ audio { display: none; }
   .logo-img { height: 42px; }
   .nav-btn-img { height: 36px; }
 
-  .scene-wrapper { padding: 8px 70px; }
+  .scene-wrapper { padding: 8px 8px; }
   .scene-nav-btn { width: 52px; height: 52px; }
   .scene-box { height: 280px; }
   .scene-timer { font-size: 32px; letter-spacing: 2px; top: 12px; }
   .rest-scene-box .scene-timer { font-size: 24px; }
-  .scene-tomato-char { width: 110px; }
-  .scene-plate-char  { width: 150px; }
-  .scene-stickman-char { width: 120px; }
+  .scene-tomato-char { width: 100px; }
+  .scene-plate-char  { width: 130px; }
+  .scene-stickman-char { width: 110px; }
   .lp-player { height: 52px; }
 
-  .task-desk { height: 140px; }
-  .task-grid { grid-template-columns: repeat(2, 1fr); }
-  .task-tomato-img { width: 50px; }
+  .task-desk { height: 170px; width: 95%; }
 
   .level-card { flex-direction: column; align-items: flex-start; height: auto; min-height: 120px; }
   .level-right { max-width: 100%; width: 100%; }
-  .calendar-area { margin: 14px; grid-template-columns: 1fr; }
-  .record-calendar { grid-template-columns: repeat(7, 1fr); }
-  .record-day { width: auto; height: auto; }
+  .calendar-area { margin: 14px auto; grid-template-columns: 1fr; }
+  .today-col { min-width: unset; max-width: unset; }
 
   .modal-box { padding: 22px 16px; }
   .pomo-opt-img { width: 58px; height: 42px; }
