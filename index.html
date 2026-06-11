@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>POMO — Pomodoro Study Service</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="assets/images/logo/pomo-logo.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo/Tomato.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="sketchy">
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="2"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
 
   <!-- ===== 공통 헤더 (2-row) ===== -->
   <header class="header">
