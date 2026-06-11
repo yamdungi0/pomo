@@ -1369,20 +1369,24 @@ audio { display: none; }
 
 @media (max-width: 600px) {
   :root { --header-h: 90px; }
-  .header-main-row { height: 54px; padding: 0 12px; }
-  .header-auth-row { padding: 0 12px; height: 32px; }
-  .logo-img { height: 42px; }
-  .nav-btn-img { height: 36px; }
+  .header-main-row { height: 54px; padding: 0 8px; }
+  .header-auth-row { padding: 0 8px; height: 32px; }
+  .logo-img { height: 38px; }
+  .header-nav { gap: 4px; }
+  .nav-img-btn { width: 72px; height: 36px; }
+  .nav-btn-img { width: 72px; height: 36px; }
 
-  .scene-wrapper { padding: 8px 8px; }
-  .scene-nav-btn { width: 52px; height: 52px; }
-  .scene-box { height: 280px; }
-  .scene-timer { font-size: 32px; letter-spacing: 2px; top: 12px; }
-  .rest-scene-box .scene-timer { font-size: 24px; }
-  .scene-tomato-char { width: 100px; }
-  .scene-plate-char  { width: 130px; }
-  .scene-stickman-char { width: 110px; }
-  .lp-player { height: 52px; }
+  .scene-wrapper { padding: 8px 4px; }
+  .scene-nav-btn { width: 44px; height: 44px; }
+  .scene-box { height: 260px; }
+  .scene-timer { font-size: 28px; letter-spacing: 2px; top: 10px; }
+  .rest-scene-box .scene-timer { font-size: 22px; }
+  .scene-tomato-char { width: 80px; }
+  .scene-plate-char  { width: 105px; }
+  .scene-stickman-char { width: 88px; }
+  .lp-player { height: 46px; width: 88%; }
+  .rest-lp-player { height: 62px; width: calc(100% - 80px); }
+  .rest-lp-disc { width: 42px; height: 42px; }
 
   .task-desk { height: 130px; width: 95%; }
 
@@ -1390,7 +1394,24 @@ audio { display: none; }
   .level-right { max-width: 100%; width: 100%; }
   .calendar-area { margin: 14px auto; grid-template-columns: 1fr; }
   .today-col { min-width: unset; max-width: unset; }
+  .cal-month-label { font-size: 0.95rem; }
+  .record-calendar { gap: 4px; }
+  .today-plate-wrap { width: 90px; height: 90px; }
+  .today-plate-num { font-size: 2rem; }
 
   .modal-box { padding: 22px 16px; }
   .pomo-opt-img { width: 58px; height: 42px; }
+}
+
+@media (max-width: 400px) {
+  .logo-img { height: 32px; }
+  .nav-img-btn { width: 60px; height: 30px; }
+  .nav-btn-img { width: 60px; height: 30px; }
+  .header-nav { gap: 2px; }
+  .auth-btn { padding: 4px 10px; font-size: 11px; }
+
+  .scene-box { height: 220px; }
+  .scene-tomato-char { width: 65px; }
+  .scene-plate-char  { width: 85px; }
+  .scene-stickman-char { width: 72px; }
 }
