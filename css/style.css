@@ -1368,41 +1368,14 @@ audio { display: none; }
 }
 
 @media (max-width: 600px) {
-  :root { --header-h: 190px; }
-
-  /* body: 모바일은 body 스크롤로 전환 (헤더가 auto height이므로 overflow:hidden 해제) */
-  body { overflow-y: auto; }
-
-  /* 헤더: auto 높이 */
-  .header { height: auto; }
+  :root { --header-h: 90px; }
   .header-auth-row { padding: 0 8px; height: 32px; }
-
-  /* 로고(왼쪽) | 세로 네비(오른쪽) 2열 그리드 */
-  .header-main-row {
-    height: auto;
-    padding: 6px 12px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: start;
-    gap: 8px;
-  }
-  .header-spacer { display: none; }
-
-  /* 로고: 데스크톱 margin 제거 */
+  .header-main-row { height: 54px; padding: 0 8px; }
   .logo-btn { margin-top: 0; margin-left: 0; }
   .logo-img { height: 38px; }
-
-  /* 네비: 세로 쌓기 */
-  .header-nav { flex-direction: column; align-items: center; gap: 4px; }
-  .nav-img-btn { width: 140px; height: auto; }
-  .nav-btn-img { width: 140px; height: auto; }
-
-  /* 페이지: body 스크롤 방식으로 전환 (height → min-height, overflow 해제) */
-  #studyPage.active-page  { height: auto; min-height: calc(100vh - var(--header-h)); overflow-y: visible; }
-  #restPage, #restPage.active-page { height: auto; min-height: calc(100vh - var(--header-h)); overflow-y: visible; overflow-x: clip; }
-  #mainPage, #mainPage.active-page { height: auto; min-height: calc(100vh - var(--header-h)); }
-  #recordPage, #recordPage.active-page { height: auto; min-height: calc(100vh - var(--header-h)); }
-  .main-hero { min-height: calc(100vh - var(--header-h)); }
+  .header-nav { flex-direction: row; gap: 4px; }
+  .nav-img-btn { width: auto; height: 34px; }
+  .nav-btn-img { height: 34px; width: auto; object-fit: contain; }
 
   .scene-wrapper { padding: 8px 4px; }
   .scene-nav-btn { width: 44px; height: 44px; }
@@ -1440,8 +1413,8 @@ audio { display: none; }
 
 @media (max-width: 400px) {
   .logo-img { height: 32px; }
-  .nav-img-btn { width: 120px; height: auto; }
-  .nav-btn-img { width: 120px; height: auto; }
+  .nav-img-btn { height: 28px; width: auto; }
+  .nav-btn-img { height: 28px; width: auto; object-fit: contain; }
   .header-nav { gap: 2px; }
   .auth-btn { padding: 4px 10px; font-size: 11px; }
 
