@@ -54,17 +54,17 @@ const REST_THEMES = [
   },
   {
     name:  'Cozy Couch',
-    scene: '',   // rest-scene-2.png를 추가하면 연결됨
+    scene: 'assets/images/backgrounds/rest-scene-2.jpg',
     music: 'assets/music/rest/rest-2.mp3',
   },
   {
     name:  'Starry Night',
-    scene: '',
+    scene: 'assets/images/backgrounds/rest-scene-3.jpg',
     music: 'assets/music/rest/rest-3.mp3',
   },
   {
     name:  'Campfire',
-    scene: '',
+    scene: 'assets/images/backgrounds/rest-scene-4.jpg',
     music: 'assets/music/rest/rest-4.mp3',
   },
 ];
@@ -610,7 +610,7 @@ function resetStudyTimer() {
   studyRemaining = STUDY_DURATION;
   renderStudyTime();
   updateLpState('study', false);
-  pauseStudyMusic();
+  stopStudyMusic();
   const fillEl = document.getElementById('studyProgressFill');
   if (fillEl) fillEl.style.width = '0%';
 }
@@ -626,7 +626,7 @@ function toggleStudyTimer() {
 
 /** 25분 완료 처리 */
 function finishStudyPomo() {
-  pauseStudyMusic();
+  stopStudyMusic();
   updateLpState('study', false);
 
   // 기록 저장
@@ -702,6 +702,11 @@ function pauseStudyMusic() {
   studyAudio.pause();
 }
 
+function stopStudyMusic() {
+  studyAudio.pause();
+  studyAudio.currentTime = 0;
+}
+
 /* =====================================================
    LP 이미지 애니메이션 (CSS .playing 클래스로 spin 제어)
    ===================================================== */
@@ -767,7 +772,7 @@ function resetRestTimer() {
   restRemaining = REST_DURATION;
   renderRestTime();
   updateLpState('rest', false);
-  pauseRestMusic();
+  stopRestMusic();
 }
 
 function toggleRestTimer() {
@@ -780,7 +785,7 @@ function toggleRestTimer() {
 
 /** 5분 휴식 완료 처리 */
 function finishRestTimer() {
-  pauseRestMusic();
+  stopRestMusic();
   updateLpState('rest', false);
   openModal('breakComplete');
 }
@@ -837,6 +842,11 @@ function playRestMusic() {
 
 function pauseRestMusic() {
   restAudio.pause();
+}
+
+function stopRestMusic() {
+  restAudio.pause();
+  restAudio.currentTime = 0;
 }
 
 /* =====================================================
